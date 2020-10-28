@@ -1,6 +1,8 @@
 from flask import Flask, render_template, url_for
 app = Flask(__name__)
+from forms import RegestartionForm, LoginForm
 
+app.config['SECRET_KEY']= 'stuxnet993.'
 
 pitches = [
     {
@@ -27,9 +29,14 @@ def hello():
 @app.route("/about")
 def about():
 
-  
-
     return render_template('about.html', title = 'About')
+
+@app.route("/register")
+def about():
+
+    
+
+
 
 
 
