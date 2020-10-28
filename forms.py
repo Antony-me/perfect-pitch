@@ -1,23 +1,23 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField,SubmitField,SelectField, BooleanField
 from wtforms.validators import Required, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, ValidationError, BooleanField
+from flask_wtf import FlaskForm
 
 class RegistartionForm(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
+    username = StringField('username', validators=[Required()])
 
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[Required()])
 
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators =[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password', validators=[Required()])
+    confirm_password = PasswordField('Confirm Password', validators =[Required(), EqualTo('password')])
 
     submit = SubmitField('sign Up')
 
 
 class LoginForm(FlaskForm):
   
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[Required()])
 
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[Required()])
     remember = BooleanField('Remember me?')
     
 
