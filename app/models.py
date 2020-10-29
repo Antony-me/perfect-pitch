@@ -1,7 +1,10 @@
+from werkzeug.security import generate_password_hash,check_password_hash
 from . import db
 from datetime import datetime
+from flask_login import UserMixin
 
-class User(db.Model):
+
+class User(UserMixin, db.Model):
     """ 
     class modelling the users 
     """
@@ -17,7 +20,7 @@ class User(db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pitches = db.relationship("Pitch", backref="user", lazy = "dynamic")
-    comment = db.relationship("Comments", backref="user", lazy = "dynamic")
+    # comment = db.relationship("Comments", backref="user", lazy = "dynamic")
     # vote = db.relationship("Votes", backref="user", lazy = "dynamic")
 
 
