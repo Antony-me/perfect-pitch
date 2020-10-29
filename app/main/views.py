@@ -47,12 +47,12 @@ def login():
     return render_template('login.html', title ='Login', form=form)
 
 
-# @main.route("/update")
-# def update():
+@main.route("/update")
+def update():
 
-#     form = UpdateProfile()
+    form = UpdateProfile()
     
-#     return render_template('update.html', title ='Login', form=form)
+    return render_template('update.html', title ='Login', form=form)
 
 @main.route("/addpitch")
 def addpitch():
