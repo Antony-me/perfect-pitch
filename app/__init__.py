@@ -1,11 +1,28 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
+from config import config_options
 
-app = Flask(__name__)
+bootstrap = Bootstrap()
+db = SQLAlchemy()
 
-app.config['SECRET_KEY']= 'stuxnet993.'
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:Access@localhost/perfectpitch'
-db = SQLAlchemy(app)
+def create_app(config_name):
 
+    app = Flask(__name__)
 
-from app import views
+    # Creating the app configurations
+    app.config.from_object(config_options[config_name])
+
+    # Initializing flask extensions
+    bootstrap.init_app(app)
+    db.init_app(app)
+
+ # Registering the blueprint
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    # Will add the views and forms
+
+    return app
+
+from .main import views

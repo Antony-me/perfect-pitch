@@ -1,4 +1,4 @@
-from app import db
+from . import db
 from datetime import datetime
 
 class User(db.Model):
@@ -18,7 +18,7 @@ class User(db.Model):
     profile_pic_path = db.Column(db.String())
     pitches = db.relationship("Pitch", backref="user", lazy = "dynamic")
     comment = db.relationship("Comments", backref="user", lazy = "dynamic")
-    vote = db.relationship("Votes", backref="user", lazy = "dynamic")
+    # vote = db.relationship("Votes", backref="user", lazy = "dynamic")
 
 
     # securing passwords
@@ -73,7 +73,7 @@ class Pitch(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     comment = db.relationship("Comments", backref="pitches", lazy = "dynamic")
-    vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
+    # vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
 
 
 
