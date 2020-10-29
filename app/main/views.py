@@ -18,8 +18,8 @@ pitches = [
     }
 ]
 
-
 @main.route("/")
+@main.route("/home")
 def home():
 
     return render_template('home.html', pitches=pitches)
@@ -35,14 +35,15 @@ def register():
 
     form = RegistartionForm()
     if form.validate_on_submit():
-        flask(f'Account Created for {form.username.data}!!', 'success')
-        return redirect(url_for('home'))
+        flash(f'Account Created for {form.username.data}!!', 'success')
+        return redirect(url_for('main.home'))
     return render_template('register.html', title ='Register', form=form)
 
-@main.route("/login")
+@main.route("/login", methods=['GET', 'POST'])
 def login():
 
     form = LoginForm()
+    
     
     return render_template('login.html', title ='Login', form=form)
 

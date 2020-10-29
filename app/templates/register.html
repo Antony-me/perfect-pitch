@@ -1,7 +1,9 @@
 {% extends "macros.html"%}
 {% block content%}
    <div class="content-section">
-       <form action="POST" action="">
+       <form method="POST" action="">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
            <h3>Welcome to Perfect Pitch</h3>
            <fieldset class="form-group">
                <div class="form-group">
@@ -27,6 +29,6 @@
        </form>
    </div>
    <div>
-       <small class="text-muted">Already have An Account? <a href="{{ url_for('main.home')}}">Sign Up</a></small>
+       <small class="text-muted">Already have An Account? <a href="{{ url_for('main.login')}}">Log In</a></small>
    </div>
 {% endblock%}
