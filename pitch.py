@@ -1,8 +1,12 @@
 from flask import Flask, render_template, url_for, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
+from forms import RegistartionForm , LoginForm, UpdateProfile, CommentForm
+# from models import User, UpdateProfile, Pitch, PitchCategory, Comments
 app = Flask(__name__)
-from forms import RegistartionForm , LoginForm
 
 app.config['SECRET_KEY']= 'stuxnet993.'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:Access@localhost/perfectpitch'
+db = SQLAlchemy(app)
 
 pitches = [
     {
@@ -44,12 +48,16 @@ def register():
 def login():
 
     form = LoginForm()
-
+    
     return render_template('login.html', title ='Login', form=form)
 
+
+@app.route("/update")
+def update():
+
+    form = UpdateProfile()
     
-
-
+    return render_template('update.html', title ='Login', form=form)
 
 
 
