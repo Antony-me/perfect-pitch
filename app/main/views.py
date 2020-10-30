@@ -1,8 +1,9 @@
 from flask import  render_template, url_for, flash, redirect
 from . import main
-from .forms import  CommentForm, AddPitch, LoginForm
+from .forms import  CommentForm, AddPitch, LoginForm, UpdateProfile
 from app.models import User,Pitch, PitchCategory, Comments
 from flask_login import login_required
+from ..import db
 
 pitches = [
     {
@@ -27,37 +28,41 @@ def home():
 
 
 @main.route("/about")
+@login_required
 def about():
 
     return render_template('about.html', title = 'About')
 
 
-@main.route('/pitch/new/<int:pitch_id>', methods = ['GET','POST'])
-# @login_required
-def new_pitch(id):
+#.....
+@main.route('/user/<uname>')
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
 
-    form = AddPitch()
-    
-    return render_template('addpitch.html', title ='Addd Your Pitch', form=form)
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
+
+
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@login_required
+def update_profile(uname):
+
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
+
+    form = UpdateProfile()
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname=user.username))
+
+    return render_template('profile/update.html',form =form)
 
 
 
-
-# Login function
-@main.route('/login',methods=['GET','POST'])
-def login():
-    """
-    Function that checks if the form is validated
-    """
-    form = LoginForm()
-
-    # if form.validate_on_submit():
-    #     user = User.query.filter_by(email = login_form.email.data).first()
-    #     if user is not None and user.verify_password(login_form.password.data):
-    #         login_user(user,login_form.remember.data)
-    #         return redirect(request.args.get('next')or url_for('main.index'))
-
-    #     flash('Invalid Username or Password')
-
-    return render_template('auth/login.html', form = form)
 

@@ -23,11 +23,17 @@ class RegistrationForm(FlaskForm):
 
 class LoginForm(FlaskForm):
   
-    email = StringField('Email', validators=[Required()])
+    username = StringField('Username', validators=[Required()])
 
     password = PasswordField('Password', validators=[Required()])
     remember = BooleanField('Remember me?')
     
 
     submit = SubmitField('Login In')
+
+class AddPitch(FlaskForm):
+    title = StringField('Pitch title',validators=[Required()])
+    content = TextAreaField('Bio.',validators = [Required()])
+    submit = SubmitField('Submit')
+
 

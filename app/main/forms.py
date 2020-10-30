@@ -33,3 +33,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login Up')
 
 
+class UpdateProfile(FlaskForm):
+    bio = TextAreaField('Tell us about you.',validators = [Required()])
+    submit = SubmitField('Submit')

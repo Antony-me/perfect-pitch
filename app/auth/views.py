@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, AddPitch
 from . import auth
 from ..import db
 from ..models import User
@@ -18,6 +18,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        flash('Account succesfully created!!', 'success')
         return redirect(url_for('auth.login'))
 
     title = "Registration"
@@ -31,16 +32,31 @@ def login():
     Function that checks if the form is validated
     """
     form = LoginForm()
-
     if form.validate_on_submit():
-        user = User.query.filter_by(email = login_form.email.data).first()
-        if user is not None and user.verify_password(login_form.password.data):
-            login_user(user,login_form.remember.data)
-            return redirect(request.args.get('next')or url_for('main.home'))
+        user = User.query.filter_by(username = form.username.data).first()
+        if user is not None and user.verify_password(form.password.data):
 
-        flash('Invalid Username or Password' 'danger')
+            flash(f'Welcome, You are signed in as {form.username.data}!', 'success')
+
+            login_user(user,form.remember.data)
+
+            return redirect(request.args.get('next') or url_for('main.home'))
+        else:
+    
+            flash('Invalid Username or Password', 'danger')
 
     return render_template('auth/login.html', form = form)
+
+
+@auth.route('/pitch/new/', methods = ['GET','POST'])
+@login_required
+def new_pitch(id):
+
+    form = AddPitch()
+    
+    return render_template('auth/addpitch.html', title ='Addd Your Pitch', form=form)
+
+
 
 
 
@@ -49,4 +65,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.home'))
