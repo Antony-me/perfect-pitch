@@ -71,17 +71,14 @@ def update_profile(uname):
 def new_pitch():
     form = AddPitch()
     if form.validate_on_submit():
-        content = form.content.data
-        title = form.title.data
-        author = current_user
-        category = form.category.data
-        print(current_user._get_current_object().id)
-        new_pitch = Pitch(author =current_user._get_current_object().id, title = title, content=content, category=category)
+        new_pitch = Pitch(author =current_user._get_current_object().id, title = form.title.data, content= form.content.data, category=form.category.data)
         db.session.add(new_pitch)
         db.session.commit()
-        
-        flash(f'Your Pitch was created succesfully {form.username.data}!', 'success')
+
+        flash(f'Your Pitch was created succesfully !', 'success')
+
         return redirect(url_for('main.home'))
+        
     return render_template('auth/addpitch.html',form=form)
 
 
