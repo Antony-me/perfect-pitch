@@ -10,11 +10,6 @@ class PitchForm(FlaskForm):
     category = SelectField('Type',choices=[('interview','Interview pitch'),('product','Product pitch'),('promotion','Promotion pitch')],validators=[Required()])
     submit = SubmitField('Submit')
 
-class AddPitch(FlaskForm):
-    title = StringField('Pitch title',validators=[Required()])
-    content = TextAreaField('Bio.',validators = [Required()])
-    submit = SubmitField('Submit')
-
 
 class CommentForm(FlaskForm):
     text = TextAreaField('Leave a comment:',validators=[Required()])
@@ -36,3 +31,10 @@ class LoginForm(FlaskForm):
 class UpdateProfile(FlaskForm):
     bio = TextAreaField('Tell us about you.',validators = [Required()])
     submit = SubmitField('Submit')
+
+
+class AddPitch(FlaskForm):
+    title = StringField('Pitch title',validators=[Required()])
+    content = TextAreaField('Your Pitch.',validators = [Required()])
+    submit = SubmitField('Submit')
+

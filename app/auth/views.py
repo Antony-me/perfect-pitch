@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user
-from .forms import RegistrationForm, LoginForm, AddPitch
+from .forms import RegistrationForm, LoginForm
 from . import auth
 from ..import db
 from ..models import User
@@ -46,18 +46,6 @@ def login():
             flash('Invalid Username or Password', 'danger')
 
     return render_template('auth/login.html', form = form)
-
-
-@auth.route('/pitch/new/', methods = ['GET','POST'])
-@login_required
-def new_pitch(id):
-
-    form = AddPitch()
-    
-    return render_template('auth/addpitch.html', title ='Addd Your Pitch', form=form)
-
-
-
 
 
 #logout function

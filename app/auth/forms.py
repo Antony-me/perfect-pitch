@@ -31,9 +31,3 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField('Login In')
 
-class AddPitch(FlaskForm):
-    title = StringField('Pitch title',validators=[Required()])
-    content = TextAreaField('Bio.',validators = [Required()])
-    submit = SubmitField('Submit')
-
-

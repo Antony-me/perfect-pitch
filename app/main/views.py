@@ -1,7 +1,7 @@
 from flask import  render_template, url_for, flash, redirect
 from . import main
-from .forms import  CommentForm, AddPitch, LoginForm, UpdateProfile
-from app.models import User,Pitch, PitchCategory, Comments
+from .forms import  CommentForm, AddPitch, LoginForm, UpdateProfile, AddPitch
+from app.models import User,Pitch, Comments
 from flask_login import login_required
 from ..import db
 
@@ -23,6 +23,8 @@ pitches = [
 @main.route("/")
 # @main.route("/home")
 def home():
+
+    # pitches = Pitch.query.all
 
     return render_template('home.html', pitches=pitches)
 
@@ -62,6 +64,25 @@ def update_profile(uname):
         return redirect(url_for('.profile',uname=user.username))
 
     return render_template('profile/update.html',form =form)
+
+
+@main.route('/pitches/new/', methods = ['GET','POST'])
+@login_required
+def new_pitch():
+    form = AddPitch()
+    if form.validate_on_submit():
+        content = form.content.data
+        title = form.title.data
+        author = current_user
+        category = form.category.data
+        print(current_user._get_current_object().id)
+        new_pitch = Pitch(author =current_user._get_current_object().id, title = title, content=content, category=category)
+        db.session.add(new_pitch)
+        db.session.commit()
+        
+        flash(f'Your Pitch was created succesfully {form.username.data}!', 'success')
+        return redirect(url_for('main.home'))
+    return render_template('auth/addpitch.html',form=form)
 
 
 
