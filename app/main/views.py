@@ -5,26 +5,26 @@ from app.models import User,Pitch, Comments
 from flask_login import login_required
 from ..import db
 
-pitches = [
-    {
-        'author': 'John Doe',
-        'title': 'Pitch 1',
-        'content': 'First pitch content',
-        'date_posted': 'October 20, 2020'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Pitch 2',
-        'content': 'Second pitch content',
-        'date_posted': 'October 20, 2020'
-    }
-]
+# pitches = [
+#     {
+#         'author': 'John Doe',
+#         'title': 'Pitch 1',
+#         'content': 'First pitch content',
+#         'date_posted': 'October 20, 2020'
+#     },
+#     {
+#         'author': 'Jane Doe',
+#         'title': 'Pitch 2',
+#         'content': 'Second pitch content',
+#         'date_posted': 'October 20, 2020'
+#     }
+# ]
 
 @main.route("/")
 # @main.route("/home")
 def home():
 
-    # pitches = Pitch.query.all
+    pitches = Pitch.query.all()
 
     return render_template('home.html', pitches=pitches)
 
@@ -66,19 +66,21 @@ def update_profile(uname):
     return render_template('profile/update.html',form =form)
 
 
-@main.route('/pitches/new/', methods = ['GET','POST'])
+@main.route('/pitches/new', methods = ['GET','POST'])
 @login_required
 def new_pitch():
     form = AddPitch()
     if form.validate_on_submit():
-        new_pitch = Pitch(author =current_user._get_current_object().id, title = form.title.data, content= form.content.data, category=form.category.data)
+        author = 1
+
+        new_pitch = Pitch(user_id=author, title = form.title.data, content= form.content.data, category=form.category.data)
         db.session.add(new_pitch)
         db.session.commit()
 
         flash(f'Your Pitch was created succesfully !', 'success')
 
         return redirect(url_for('main.home'))
-        
+
     return render_template('auth/addpitch.html',form=form)
 
 

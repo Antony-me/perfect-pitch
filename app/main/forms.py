@@ -36,5 +36,6 @@ class UpdateProfile(FlaskForm):
 class AddPitch(FlaskForm):
     title = StringField('Pitch title',validators=[Required()])
     content = TextAreaField('Your Pitch.',validators = [Required()])
+    category = StringField('Category.', validators=[Required()])
     submit = SubmitField('Submit')
 
