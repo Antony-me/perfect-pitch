@@ -23,12 +23,17 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
                 <!-- <a class="nav-item nav-link" href="/">Home</a> -->
-                <a class="nav-item nav-link" href="/about">About</a>
+                <a class="nav-item nav-link" href="{{url_for('main.about')}}">About</a>
               </div>
               <!-- Navbar Right Side -->
               <div class="navbar-nav">
-                <a class="nav-item nav-link" href="{{ url_for('main.login')}}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for('main.register')}}">Register</a>
+                {% if current_user.is_authenticated %}
+                  <li style="color:white;padding:15px;">{{current_user.username}}</li>
+                  <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
+                  {% else %}
+                <a class="nav-item nav-link"  href="{{url_for('auth.login')}}">Login</a>
+                <a class="nav-item nav-link" href="{{url_for('auth.register')}}">Register</a>
+                {%endif%}
               </div>
             </div>
           </div>
