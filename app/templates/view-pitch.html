@@ -24,7 +24,9 @@
         <h4 class="text-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h4>Comments:</h4> 
 
         {% if comment %}
-         <p>{{ comment.id }}</p>
+        {%  for items in comment %}
+         <p>{{ items.opinion }}</p>
+        {% endfor %}
         {%else%}
         <h3>No Comments yet </h3>
         {% endif %}
