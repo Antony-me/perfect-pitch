@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255),unique = True, index =True)
     pass_secure = db.Column(db.String(255))
     bio = db.Column(db.String(255))
-    profile_pic_path = db.Column(db.String())
+    profile_pic_path = db.Column(db.String(20), default='default.jpeg')
     pitches = db.relationship("Pitch", backref="user", lazy = "dynamic")
   
 
@@ -50,6 +50,7 @@ class PitchCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     description = db.Column(db.String(255))
+
 
     # save pitches
     def save_category(self):
