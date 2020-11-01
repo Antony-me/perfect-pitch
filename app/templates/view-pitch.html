@@ -19,17 +19,17 @@
            </tr>
            
          </table>
-        <a class="btn btn-info" href="{{url_for('.post_comment',id=pitches.id)}}"> Add your comment</a></h4>
+   </div>
+   <a class="btn btn-info" href="{{url_for('.post_comment',id=pitches.id)}}"> Add your comment</a></h4>
         <h4 class="text-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h4>Comments:</h4> 
 
         {% if comment %}
-         <p style="color:rgb(138, 37, 121)">{{comment.opinion }}</p>
+         <p>{{ comment.id }}</p>
         {%else%}
-        <h3 class="text-center" style="color:rgb(138, 37, 121);">No Comments </h3>
+        <h3>No Comments yet </h3>
         {% endif %}
        </div>
 
-   </div>
  </div>
 
 {% endblock %}

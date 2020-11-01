@@ -60,7 +60,8 @@ def update_profile(uname):
 def new_pitch():
     form = AddPitch()
     if form.validate_on_submit():
-        new_pitch = Pitch(title = form.title.data, content= form.content.data, category=form.category.data)
+        author = current_user.id
+        new_pitch = Pitch(user_id=author, title = form.title.data, content= form.content.data, category=form.category.data)
         db.session.add(new_pitch)
         db.session.commit()
 
@@ -118,11 +119,12 @@ def view_pitch(id):
 
     if pitchess is None:
         abort(404)
-    #
-    comments = Comments.query.filter_by(pitches_id=id)
+    
+    comment = Comments.get_comments(id)
+    print(comment)
     count_likes = Votes.query.filter_by(pitches_id=id, vote=1).all()
     count_dislikes = Votes.query.filter_by(pitches_id=id, vote=2).all()
-    return render_template('view-pitch.html', pitches = pitchess, comment = comments, count_likes=len(count_likes), count_dislikes=len(count_dislikes))
+    return render_template('view-pitch.html', pitches = pitchess, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes))
 
 
 #Routes upvoting/downvoting pitches
@@ -134,9 +136,7 @@ def upvote(id,vote_type):
     """
     # Query for user
     votes = Votes.query.filter_by(user_id=current_user.id).all()
-    print(f'The new vote is {votes}')
     to_str=f'{vote_type}:{current_user.id}:{id}'
-    print(f'The current vote is {to_str}')
 
     if not votes:
         new_vote = Votes(vote=vote_type, user_id=current_user.id, pitches_id=id)
@@ -145,12 +145,12 @@ def upvote(id,vote_type):
 
     for vote in votes:
         if f'{vote}' == to_str:
-            print('YOU CANNOT VOTE MORE THAN ONCE')
+
             break
         else:   
             new_vote = Votes(vote=vote_type, user_id=current_user.id, pitches_id=id)
             new_vote.save_vote()
-            print('YOU HAVE VOTED')
+           
             break
 
     return redirect(url_for('.view_pitch', id=id))
