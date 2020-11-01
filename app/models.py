@@ -18,8 +18,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255),unique = True, index =True)
     pass_secure = db.Column(db.String(255))
     bio = db.Column(db.String(255))
-    profile_pic_path = db.Column(db.String())
+    profile_pic_path = db.Column(db.String(20), default='default.jpeg')
     pitches = db.relationship("Pitch", backref="user", lazy = "dynamic")
+    comment = db.relationship("Comments", backref="user", lazy = "dynamic")
+    vote = db.relationship("Votes", backref="user", lazy = "dynamic")
+
   
 
     # securing passwords
@@ -51,6 +54,7 @@ class PitchCategory(db.Model):
     name = db.Column(db.String(255))
     description = db.Column(db.String(255))
 
+
     # save pitches
     def save_category(self):
         db.session.add(self)
@@ -75,6 +79,9 @@ class Pitch(db.Model):
     category = db.Column(db.String())
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     comment = db.relationship("Comments", backref="pitches", lazy = "dynamic")
+    vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
+
+
     
 
 
@@ -125,6 +132,29 @@ class Comments(db.Model):
         comment = Comments.query.order_by(Comments.time_posted.desc()).filter_by(pitches_id=id).all()
         
         return comment
+
+
+#votes
+class Votes(db.Model):
+    """
+    class to model votes
+    """
+    __tablename__='votes'
+
+    id = db.Column(db. Integer, primary_key=True)
+    vote = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    pitches_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
+
+    def save_vote(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_votes(cls,user_id,pitches_id):
+        votes = Votes.query.filter_by(user_id=user_id, pitches_id=pitches_id).all()
+        return votes
+
 
 
 

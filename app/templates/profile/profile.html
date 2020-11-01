@@ -5,6 +5,7 @@
 <!-- displaying  Username-->
   <div class="col-md-4">
     <h3> {{user.username| capitalize}} </h3>
+    <p> Email: <a href="#">{{current_user.email}}</a> </p>
 
     <!--Displaying user bio-->
     {% if user.bio %}
@@ -18,7 +19,7 @@
   <div class="col-md-4">
 
     {% if user.profile_pic_path %}
-    <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
+    <img class ="roundend-circle" src="{{ img_file }}" alt="" class="img-thumbnail">
     {%else%}
     <p>No profile picture</p>
     {% endif %}

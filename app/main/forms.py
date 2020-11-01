@@ -7,12 +7,12 @@ class PitchForm(FlaskForm):
 
     title = StringField('Pitch title',validators=[Required()])
     text = TextAreaField('Text',validators=[Required()])
-    category = SelectField('Type',choices=[('interview','Interview pitch'),('product','Product pitch'),('promotion','Promotion pitch')],validators=[Required()])
+    category = SelectField('Type',choices=[('interview','Interview pitch'),('Tech','technology pitch'),('promotion','Promotion pitch')],validators=[Required()])
     submit = SubmitField('Submit')
 
 
 class CommentForm(FlaskForm):
-    text = TextAreaField('Leave a comment:',validators=[Required()])
+    comment = TextAreaField('Leave a comment:',validators=[Required()])
     submit = SubmitField('Submit')
 
 
@@ -36,6 +36,15 @@ class UpdateProfile(FlaskForm):
 class AddPitch(FlaskForm):
     title = StringField('Pitch title',validators=[Required()])
     content = TextAreaField('Your Pitch.',validators = [Required()])
-    category = StringField('Category.', validators=[Required()])
+    category = SelectField('Type',choices=[('interview','Interview pitch'),('Tech','technology pitch'),('Promotion','Promotion pitch'),('Sales and marketing',
+                                            'Sales and marketing pitch'), ('New product','new product pitch')],validators=[Required()])
     submit = SubmitField('Submit')
+
+
+class CategoryForm(FlaskForm):
+    """
+    class to create a wtf form for creating a pitch
+    """
+    name = StringField('category Name', validators=[Required()])
+    submit = SubmitField('Create')
 
