@@ -54,24 +54,6 @@
             {%endwith%}
             {% block content %}{% endblock %}
           </div>
-          <div class="col-md-4">
-            <div class="content-section">
-              <h3>Main Menu</h3>
-              <p class='text-muted'>
-                <ul class="list-group">
-                  <div class="dropdown">
-                    <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     <li class="list-group-item list-group-item-light">Categories</li></li>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      {% for pitch in pitches%}
-                        <a class="dropdown-item" href="#">{{ pitch.category }}</a>
-                      {% endfor %}
-                  </div>
-                </ul>
-              </p>
-            </div>
-          </div>
         </div>
       </main>
    

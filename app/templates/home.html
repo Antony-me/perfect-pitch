@@ -4,11 +4,12 @@
    <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-        <h2><a class="article-title" href="#">{{ pitch.title }}</a></h2>
+        <h2> <a class="article-title" href="{{url_for('.view_pitch',id=pitch.id)}}">{{ pitch.title }}</a> </h2>
         <small>Category: <a class="mr-2" href="#">{{ pitch.category }}</a></small>
         <small class="text-muted">Posted by {{ pitch.user.id }}</small>
       </div>
       <p class="article-content">{{ pitch.content }}</p>
+      <p><a class="btn btn-info" href="{{url_for('.post_comment',id=pitch.id)}}">Add your comment</a></p>
     </div>
   </article>
 

@@ -1,8 +1,8 @@
 from flask import  render_template, url_for, flash, redirect
 from . import main
-from .forms import  CommentForm, AddPitch, LoginForm, UpdateProfile, AddPitch
-from app.models import User,Pitch, Comments
-from flask_login import login_required
+from .forms import  CommentForm, AddPitch, LoginForm, UpdateProfile, AddPitch 
+from app.models import User,Pitch, Comments, Votes
+from flask_login import login_required, current_user
 from ..import db
 
 
@@ -10,9 +10,10 @@ from ..import db
 # @main.route("/home")
 def home():
 
-    pitches = Pitch.query.all()
+    pitchys = Pitch.query.all()
 
-    return render_template('home.html', pitches=pitches)
+
+    return render_template('home.html', pitches=pitchys)
 
 
 @main.route("/about")
@@ -86,10 +87,10 @@ def post_comment(id):
          abort(404)
 
     if form.validate_on_submit():
-        comment = form.opinion.data
-        new_comment = Comments(comment = comment, user_id = current_user.id, pitches_id = pitches.id)
+        comment = form.comment.data
+        new_comment = Comments(opinion = comment, user_id = current_user.id, pitches_id = pitches.id)
         new_comment.save_comment()
-        return redirect(url_for('.view_pitch', id = pitches.id))
+        return redirect(url_for('main.view_pitch', id = pitches.id))
 
     return render_template('comments.html', form = form, title = title)
 
@@ -104,23 +105,52 @@ def category(id):
     return render_template('category.html', pitches=pitches, category=category)
 
 
-@main.route('/add/category', methods=['GET','POST'])
+
+#view single pitch alongside its comments
+@main.route('/view-pitch/<int:id>', methods=['GET', 'POST'])
 @login_required
-def new_category():
+def view_pitch(id):
     """
-    View new group route function that returns a page with a form to create a category
+    Function the returns a single pitch for a comment to be added
     """
-    
-    form = CategoryForm()
+    # all_category = PitchCategory.get_categories()
+    pitchess = Pitch.query.get(id)
 
-    if form.validate_on_submit():
-        name = form.name.data
-        new_category = PitchCategory(name = name)
-        new_category.save_category()
-
-        return redirect(url_for('.home'))
-
-    title = 'New category'
-    return render_template('new_category.html', category_form = form, title = title)
+    if pitchess is None:
+        abort(404)
+    #
+    comments = Comments.query.filter_by(pitches_id=id)
+    count_likes = Votes.query.filter_by(pitches_id=id, vote=1).all()
+    count_dislikes = Votes.query.filter_by(pitches_id=id, vote=2).all()
+    return render_template('view-pitch.html', pitches = pitchess, comment = comments, count_likes=len(count_likes), count_dislikes=len(count_dislikes))
 
 
+#Routes upvoting/downvoting pitches
+@main.route('/pitch/upvote/<int:id>&<int:vote_type>')
+@login_required
+def upvote(id,vote_type):
+    """
+    View function that adds one to the vote_number column in the votes table
+    """
+    # Query for user
+    votes = Votes.query.filter_by(user_id=current_user.id).all()
+    print(f'The new vote is {votes}')
+    to_str=f'{vote_type}:{current_user.id}:{id}'
+    print(f'The current vote is {to_str}')
+
+    if not votes:
+        new_vote = Votes(vote=vote_type, user_id=current_user.id, pitches_id=id)
+        new_vote.save_vote()
+        flash('YOU HAVE VOTED', 'success')
+
+    for vote in votes:
+        if f'{vote}' == to_str:
+            print('YOU CANNOT VOTE MORE THAN ONCE')
+            break
+        else:   
+            new_vote = Votes(vote=vote_type, user_id=current_user.id, pitches_id=id)
+            new_vote.save_vote()
+            print('YOU HAVE VOTED')
+            break
+
+    return redirect(url_for('.view_pitch', id=id))
