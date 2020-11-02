@@ -19,8 +19,9 @@
 
         {% if comment %}
         {%  for items in comment %}
-         <p>{{ items.opinion }}</p>
-         <small>by {{ items.user.username}}</small>
+         <h5>{{ items.opinion }}</h5>
+
+         <em><small>by {{ items.user.username}}</small></em>
          <br>
          <hr>
         {% endfor %}
