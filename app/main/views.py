@@ -67,12 +67,12 @@ def update_profile(uname):
 
 
 @main.route('/pitches/new', methods = ['GET','POST'])
-@login_required
+# @login_required
 def new_pitch():
     form = AddPitch()
     if form.validate_on_submit():
-        author = current_user.id
-        new_pitch = Pitch(user_id=author, title = form.title.data, content= form.content.data, category=form.category.data)
+        # author = current_user.id
+        new_pitch = Pitch(title = form.title.data, content= form.content.data, category=form.category.data)
         db.session.add(new_pitch)
         db.session.commit()
 
