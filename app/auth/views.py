@@ -4,7 +4,7 @@ from .forms import RegistrationForm, LoginForm
 from . import auth
 from ..import db
 from ..models import User
-
+# from ..email import mail_message
 
 
 # registration route
@@ -20,9 +20,14 @@ def register():
         db.session.commit()
 
         flash('Account succesfully created!!', 'success')
+        
+        # mail_message("Welcome to Perfect Pitch","email/welcome_user",user.email, user=user)
+        
         return redirect(url_for('auth.login'))
 
     title = "Registration"
+
+    
 
     return render_template('auth/register.html', form = form, title = title)
 
