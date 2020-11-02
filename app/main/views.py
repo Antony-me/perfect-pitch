@@ -6,11 +6,18 @@ from flask_login import login_required, current_user
 from ..import db
 
 
+pitchys[{
+    'title': 'Test'
+    'content':'Test'
+    'category':'Tech'
+}]
+
+
 @main.route("/")
 # @main.route("/home")
 def home():
 
-    pitchys = Pitch.query.all()
+    # pitchys = Pitch.query.all()
 
 
     return render_template('home.html', pitches=pitchys)
