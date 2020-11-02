@@ -65,7 +65,7 @@ def update_profile(uname):
 
 
 @main.route('/pitches/new', methods = ['GET','POST'])
-# @login_required
+@login_required
 def new_pitch():
     form = AddPitch()
     if form.validate_on_submit():
