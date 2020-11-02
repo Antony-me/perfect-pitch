@@ -6,11 +6,15 @@ from flask_login import login_required, current_user
 from ..import db
 
 
-pitchys[{
-    'title': 'Test'
-    'content':'Test'
-    'category':'Tech'
-}]
+pitchys = [
+    {
+    'title': 'Test',
+    'content':'Test',
+    'category':'Tech',
+    'id': 1,
+    'user': 1
+    }
+]
 
 
 @main.route("/")
